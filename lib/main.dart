@@ -50,7 +50,7 @@ class _MyPainterState extends State<MyPainter>
 
     controller = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 5),
+      duration: Duration(seconds: 22),
     );
 
     Tween<double> _rotationTween = Tween(begin: 0, end: 100);
@@ -91,46 +91,82 @@ class _MyPainterState extends State<MyPainter>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffEFF2F7),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Center(
-            child: CustomPaint(
-              painter: ShapePainter(animation.value),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-//                  FlatButton(
-//                    child: _isPlaying ? Text("Stop") : Text("Start"),
-//                    onPressed: () {
-//                      setState(() {
-//                        this._isPlaying = !this._isPlaying;
-//                        if (_isPlaying) {
-//                          controller.forward();
-//                        } else {
-//                          controller.stop();
-//                        }
-//                      });
-//                    },
-//                  ),
-//                  SizedBox(height: 10.0),
-                  Text(
-                    durationRemaining + 's',
-                    style: TextStyle(
-                      fontSize: 50.0,
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    "Black Widow Knee Slides",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
-                  )
-                ],
+          SizedBox(height: 80.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 50.0,
+                width: 50.0,
+                decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomLeft,
+                        colors: [Color(0xff396AFC), Color(0xff2948FF)])
+                )
               ),
-            ),
+              SizedBox(width: 20.0),
+              Text("Title", style: TextStyle(
+                fontSize: 36.0
+              ),)
+            ],
+          ),
+          SizedBox(height: 125.0),
+          Column(
+            children: [
+              CustomPaint(
+                painter: ShapePainter(animation.value),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+//                FlatButton(
+//                  child: _isPlaying ? Text("Stop") : Text("Start"),
+//                  onPressed: () {
+//                    setState(() {
+//                      this._isPlaying = !this._isPlaying;
+//                      if (_isPlaying) {
+//                        controller.forward();
+//                      } else {
+//                        controller.stop();
+//                      }
+//                    });
+//                  },
+//                ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      durationRemaining + 's',
+                      style: TextStyle(
+                        fontSize: 50.0,
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      "Black Widow Knee Slides",
+                      style: TextStyle(
+                        fontSize: 20.0,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(height: 150.0),
+              RawMaterialButton(
+                onPressed: () {},
+                elevation: 2.0,
+                fillColor: Colors.white,
+                child: Icon(
+                  Icons.pause,
+                  size: 45.0,
+                ),
+                padding: EdgeInsets.all(10.0),
+                shape: CircleBorder(),
+              )
+            ],
           ),
         ],
       ),
@@ -149,9 +185,9 @@ class ShapePainter extends CustomPainter {
       ..shader = RadialGradient(colors: [Color(0xff396AFC), Color(0xff2948FF)])
           .createShader(Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 2),
-        radius: 150,
+        radius: 160,
       ))
-      ..strokeWidth = 10.0
+      ..strokeWidth = 15.0
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
@@ -160,8 +196,8 @@ class ShapePainter extends CustomPainter {
 
     canvas.drawArc(
         Rect.fromCircle(
-          center: Offset(size.width / 2, size.height / 2),
-          radius: 150,
+          center: Offset(size.width / 2, size.height / 1.5),
+          radius: 160,
         ),
         startAngle,
         endAngle,
