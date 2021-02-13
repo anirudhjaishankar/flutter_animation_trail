@@ -41,7 +41,8 @@ class _MyPainterState extends State<MyPainter>
   AnimationController controller;
 
   bool _isPlaying = true;
-  String durationRemaining = "";
+  // String durationRemaining = "";
+  int durationRemaining = 0;
   Duration elapsedTime = new Duration();
 
   @override
@@ -61,7 +62,7 @@ class _MyPainterState extends State<MyPainter>
       })
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          this.durationRemaining = controller.duration.inSeconds.toString();
+          this.durationRemaining = controller.duration.inSeconds;
           controller.stop();
         }
 
@@ -76,7 +77,7 @@ class _MyPainterState extends State<MyPainter>
       setState(() {
         if (animation.status != AnimationStatus.completed && _isPlaying) {
           elapsedTime = controller.lastElapsedDuration;
-          this.durationRemaining = elapsedTime.inSeconds.toString();
+          this.durationRemaining = timer.tick;
         }
       });
     });
@@ -110,12 +111,12 @@ class _MyPainterState extends State<MyPainter>
                 )
               ),
               SizedBox(width: 20.0),
-              Text("Title", style: TextStyle(
+              Text("Planks", style: TextStyle(
                 fontSize: 36.0
               ),)
             ],
           ),
-          SizedBox(height: 125.0),
+          SizedBox(height: 80.0),
           Column(
             children: [
               CustomPaint(
@@ -124,44 +125,63 @@ class _MyPainterState extends State<MyPainter>
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-//                FlatButton(
-//                  child: _isPlaying ? Text("Stop") : Text("Start"),
-//                  onPressed: () {
-//                    setState(() {
-//                      this._isPlaying = !this._isPlaying;
-//                      if (_isPlaying) {
-//                        controller.forward();
-//                      } else {
-//                        controller.stop();
-//                      }
-//                    });
-//                  },
-//                ),
                     SizedBox(height: 10.0),
                     Text(
-                      durationRemaining + 's',
+                      'Duration',
                       style: TextStyle(
-                        fontSize: 50.0,
+                        fontSize: 24.0,
+                        fontWeight: FontWeight.w500
+                      )
+                    ),
+                    SizedBox(height: 5.0),
+                    Text(
+                      '00:00:0'+durationRemaining.toString(),
+                      style: TextStyle(
+                        fontSize: 36.0,
+                          fontWeight: FontWeight.w700
                       ),
                     ),
                     SizedBox(height: 10.0),
                     Text(
-                      "Black Widow Knee Slides",
+                      "Target",
                       style: TextStyle(
-                        fontSize: 20.0,
+                        fontSize: 24.0,
+                          fontWeight: FontWeight.w500
                       ),
-                    )
+                    ),
+                    SizedBox(height: 5.0),
+                    Text(
+                       '00:00:45',
+                      style: TextStyle(
+                        fontSize: 30.0,
+                          fontWeight: FontWeight.w400
+                      ),
+                    ),
                   ],
                 ),
               ),
-              SizedBox(height: 150.0),
+              SizedBox(height: 90.0),
               RawMaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    this._isPlaying = !this._isPlaying;
+                    if (_isPlaying) {
+                      controller.forward();
+                    } else {
+                      controller.stop();
+                    }
+                  });
+                },
                 elevation: 2.0,
                 fillColor: Colors.white,
-                child: Icon(
+                child:  _isPlaying ?
+                Icon(
                   Icons.pause,
                   size: 45.0,
+                ) :
+                Icon(
+                    Icons.play_arrow,
+                    size: 45.0
                 ),
                 padding: EdgeInsets.all(10.0),
                 shape: CircleBorder(),
@@ -184,8 +204,8 @@ class ShapePainter extends CustomPainter {
     var paint = Paint()
       ..shader = RadialGradient(colors: [Color(0xff396AFC), Color(0xff2948FF)])
           .createShader(Rect.fromCircle(
-        center: Offset(size.width / 2, size.height / 2),
-        radius: 160,
+        center: Offset(size.width / 2, size.height / 1.7),
+        radius: 140,
       ))
       ..strokeWidth = 15.0
       ..style = PaintingStyle.stroke
@@ -196,8 +216,8 @@ class ShapePainter extends CustomPainter {
 
     canvas.drawArc(
         Rect.fromCircle(
-          center: Offset(size.width / 2, size.height / 1.5),
-          radius: 160,
+          center: Offset(size.width / 2, size.height / 1.7),
+          radius: 140,
         ),
         startAngle,
         endAngle,
