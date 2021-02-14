@@ -40,10 +40,8 @@ class _MyPainterState extends State<MyPainter>
   Animation<double> animation;
   AnimationController controller;
 
-  bool _isPlaying = true;
-  // String durationRemaining = "";
-  int durationRemaining = 0;
-  Duration elapsedTime = new Duration();
+  bool _isPlaying = false;
+  int elapsedtime = 0;
 
   @override
   void initState() {
@@ -62,10 +60,9 @@ class _MyPainterState extends State<MyPainter>
       })
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {
-          this.durationRemaining = controller.duration.inSeconds;
+          timerComplete();
           controller.stop();
         }
-
         if (!this._isPlaying) {
           controller.stop();
         }
@@ -76,8 +73,7 @@ class _MyPainterState extends State<MyPainter>
     Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
         if (animation.status != AnimationStatus.completed && _isPlaying) {
-          elapsedTime = controller.lastElapsedDuration;
-          this.durationRemaining = timer.tick;
+          this.elapsedtime += 1;
         }
       });
     });
@@ -87,6 +83,18 @@ class _MyPainterState extends State<MyPainter>
   void dispose() {
     controller.dispose();
     super.dispose();
+  }
+  void timerStart(){
+
+  }
+  void timerPause(){
+
+  }
+
+  void timerComplete(){
+    this.elapsedtime = 0;
+    this._isPlaying = false;
+    controller.reset();
   }
 
   @override
@@ -135,7 +143,7 @@ class _MyPainterState extends State<MyPainter>
                     ),
                     SizedBox(height: 5.0),
                     Text(
-                      '00:00:0'+durationRemaining.toString(),
+                      '00:00:0'+elapsedtime.toString(),
                       style: TextStyle(
                         fontSize: 36.0,
                           fontWeight: FontWeight.w700
@@ -201,8 +209,18 @@ class ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint()
+    var foregroundTimerCircleProperty = Paint()
       ..shader = RadialGradient(colors: [Color(0xff396AFC), Color(0xff2948FF)])
+          .createShader(Rect.fromCircle(
+        center: Offset(size.width / 2, size.height / 1.7),
+        radius: 140,
+      ))
+      ..strokeWidth = 15.0
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round;
+
+    var backgroundTimerCircleProperty = Paint()
+      ..shader = RadialGradient(colors: [Color(0xffCDDEEE), Color(0xffCDDEEE)])
           .createShader(Rect.fromCircle(
         center: Offset(size.width / 2, size.height / 1.7),
         radius: 140,
@@ -220,9 +238,19 @@ class ShapePainter extends CustomPainter {
           radius: 140,
         ),
         startAngle,
+        math.pi * 2,
+        false,
+        backgroundTimerCircleProperty);
+
+    canvas.drawArc(
+        Rect.fromCircle(
+          center: Offset(size.width / 2, size.height / 1.7),
+          radius: 140,
+        ),
+        startAngle,
         endAngle,
         false,
-        paint);
+        foregroundTimerCircleProperty);
   }
 
   @override
